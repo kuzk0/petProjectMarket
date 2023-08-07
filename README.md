@@ -1,4 +1,16 @@
-# Getting Started with Create React App
+# Пет-проект на create-react-app
+
+## Основные технологии и библиотеки:
+- TypeSctript
+- Firebase auth and database
+- ChakraUI
+- yup form-validation
+- react-router-dom
+- redux-toolkit state-manager
+
+
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
