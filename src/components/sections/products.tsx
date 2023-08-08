@@ -5,7 +5,7 @@ import { AsideFilters } from "../ui/asideFilters";
 import { IProduct } from "../../consts";
 
 import { RootState } from "../../store";
-import { ModalProduct } from "./modalProduct";
+import { ModalProduct } from "../modals/modalProduct";
 import { useSelector } from "react-redux";
 import { getProducts } from "../../utils/db";
 import { FC, useEffect, useState } from "react";

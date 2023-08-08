@@ -1,12 +1,13 @@
-import { FC, useState } from "react";
-import { Button, Spinner, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { FC, useEffect, useState } from "react";
+import { LinkBox, LinkOverlay, Spinner, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { IOrder, IOrderList } from "../../consts";
-import ModalOrder from "./modalOrder";
+import ModalOrder from "../modals/modalOrder";
+import { Link, useParams } from "react-router-dom";
 
 const OrdersList: FC<IOrderList> = (props) => {
   const propsOrders = props.orders;
 
-  const { isOpenModalOrder, onOpenModalOrder, onCloseModalOrder } = props;
+  const { isOpenModalOrder, onOpenModalOrder, onCloseModalOrder, isLoaded } = props;
   const [modalOrder, setModalOrder] = useState<IOrder>({
     status: "",
     items: [],
@@ -16,6 +17,7 @@ const OrdersList: FC<IOrderList> = (props) => {
     userId: "",
     userId_dateTime: "",
   });
+  const { orderId } = useParams();
   //   const page = 0;
   //   const sortBy = 10;
   //   const startSlice = page * sortBy;
@@ -26,10 +28,21 @@ const OrdersList: FC<IOrderList> = (props) => {
     setModalOrder(order);
     onOpenModalOrder();
   };
+
+  useEffect(() => {
+    if (isLoaded && filtredOrders.length) {
+      filtredOrders.forEach((order: IOrder) => {
+        if (orderId === order.userId_dateTime) {
+          setModalOrder(order);
+          onOpenModalOrder();
+        }
+      });
+    }
+  }, [onOpenModalOrder, orderId, modalOrder, isLoaded, filtredOrders]);
   return (
-    <>
+    <LinkBox as="article">
       <TableContainer>
-        <Table size="sm" variant="striped" colorScheme="blackAlpha">
+        <Table size="md" variant="striped" colorScheme="blackAlpha">
           <Thead>
             <Tr>
               <Th textAlign="center">Статус</Th>
@@ -40,20 +53,19 @@ const OrdersList: FC<IOrderList> = (props) => {
           </Thead>
 
           <Tbody>
-            {props.isLoaded ? (
+            {isLoaded ? (
               filtredOrders.length ? (
                 filtredOrders.map((order: IOrder) => (
-                  <Tr key={order.userId_dateTime}>
-                    <Td>{order.status}</Td>
+                  <Tr key={order.userId_dateTime} onClick={() => modalOrderHandle(order)}>
+                    <Td>
+                      {" "}
+                      <LinkOverlay as={Link} to={order.userId_dateTime}>
+                        {order.status}
+                      </LinkOverlay>
+                    </Td>
                     <Td>{new Date(order.dateTime).toDateString()}</Td>
                     <Td textAlign="center">{order.paymentForm}</Td>
                     <Td textAlign="center">{order.amount}</Td>
-
-                    <Td textAlign="center">
-                      <Button variant="ghost" onClick={() => modalOrderHandle(order)} as="span" flex="1" textAlign="left">
-                        Товары
-                      </Button>
-                    </Td>
                   </Tr>
                 ))
               ) : (
@@ -75,7 +87,7 @@ const OrdersList: FC<IOrderList> = (props) => {
       </TableContainer>
 
       <ModalOrder isOpenModalOrder={isOpenModalOrder} onCloseModalOrder={onCloseModalOrder} order={modalOrder} />
-    </>
+    </LinkBox>
   );
 };
 export default OrdersList;

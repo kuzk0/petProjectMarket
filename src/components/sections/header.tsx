@@ -1,10 +1,10 @@
 import { FC, useState } from "react";
 import { Box, Flex, Button, Collapse, useDisclosure } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { ModalLogin } from "./modalLogin";
-import { ModalCart } from "./modalCart";
+import { ModalLogin } from "../modals/modalLogin";
+import { ModalCart } from "../modals/modalCart";
 import { Nav } from "../ui/nav";
-import { ModalCreateAccount } from "./modalCreateAccount";
+import { ModalCreateAccount } from "../modals/modalCreateAccount";
 
 export const Header: FC = () => {
   const { isOpen: isOpenModalLogin, onOpen: onOpenModalLogin, onClose: onCloseModalLogin } = useDisclosure();

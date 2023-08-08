@@ -72,7 +72,9 @@ export interface IProductList {
   onOpenModalProduct: () => void;
   isLoaded: boolean;
 }
-
+export interface ICurrentProductInModal {
+  product: IProduct;
+}
 export interface IRatingProductStar {
   productRating: IProduct["rating"];
 }
@@ -85,9 +87,6 @@ export interface IOrder {
   amount: number;
   userId: string;
   userId_dateTime: string;
-}
-export interface ICurrentProductInModal {
-  product: IProduct;
 }
 export interface ICartItem {
   product: IProduct;

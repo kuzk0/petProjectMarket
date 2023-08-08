@@ -17,14 +17,20 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import { IModalOrder } from "../../consts";
+import { IModalOrder, PATH } from "../../consts";
 import { FC, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ModalOrder: FC<IModalOrder> = (props) => {
   const { isOpenModalOrder, onCloseModalOrder, order } = props;
+  const navigate = useNavigate();
 
+  const onCloseModalOrderHandle = () => {
+    onCloseModalOrder();
+    navigate(PATH.ORDERS);
+  };
   return (
-    <Drawer isOpen={isOpenModalOrder} placement="right" size="lg" onClose={onCloseModalOrder}>
+    <Drawer isOpen={isOpenModalOrder} placement="right" size="lg" onClose={onCloseModalOrderHandle}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
@@ -66,7 +72,7 @@ const ModalOrder: FC<IModalOrder> = (props) => {
 
         <DrawerFooter justifyContent="space-between">
           <Text mr={3}>Итого: {order.amount}</Text>
-          <Button variant="outline" mr={3} onClick={onCloseModalOrder}>
+          <Button variant="outline" mr={3} onClick={onCloseModalOrderHandle}>
             Закрыть
           </Button>
         </DrawerFooter>

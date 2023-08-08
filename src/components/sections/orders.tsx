@@ -16,7 +16,9 @@ export const Orders: FC = () => {
     ordersOutput: [],
     isLoadedOrders: false,
   });
+  
   const navigate = useNavigate();
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
