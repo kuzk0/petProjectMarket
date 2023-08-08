@@ -14,10 +14,10 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import { useState } from "react";
+import { FC, useState } from "react";
 
 import { Link } from "react-router-dom";
-import { PATH } from "../../consts";
+import { INav, PATH } from "../../consts";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -32,7 +32,7 @@ import { RiFileList3Line } from "react-icons/ri";
 import { signOutUser } from "../../utils/db";
 import { signOut } from "../../store/slices/userSlice";
 
-export const Nav = (props: any) => {
+export const Nav: FC<INav> = (props) => {
   const { onOpenModalCart, onOpenModalLogin, onOpenModalCreateAccount } = props;
   const Icon = useColorModeValue(MoonIcon, SunIcon);
   const { toggleColorMode } = useColorMode();
@@ -64,8 +64,7 @@ export const Nav = (props: any) => {
       });
   };
   return (
-    <Flex align="center" justify={["center", "center", "flex-end", "flex-end"]} direction={["column", "column", "row", "row"]} pt={[4, 0, 0, 0]}>
-      {/* TODO: map links */}
+    <Flex align="center" justify={{ base: "center", md: "flex-end" }} direction={{ base: "column", md: "row" }} pt={{ base: 4, sm: 0 }}>
       <LinkUI as={Link} mb={{ base: 8, md: 0 }} mr={{ base: 0, md: 8 }} to={PATH.MAIN}>
         Главная
       </LinkUI>

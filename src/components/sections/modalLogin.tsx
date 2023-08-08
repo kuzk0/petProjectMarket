@@ -16,7 +16,7 @@ import {
   FormControl,
   useToast,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 
 import { Field, Form, Formik } from "formik";
 
@@ -25,8 +25,10 @@ import { getUserCart, signInUser } from "../../utils/db";
 import { useDispatch } from "react-redux";
 import { updateCart } from "../../store/slices/cartSlice";
 import { login } from "../../store/slices/userSlice";
-export const ModalLogin = (props: { isOpenModalLogin: boolean; onCloseModalLogin: () => void }) => {
-  const { isOpenModalLogin: isOpen, onCloseModalLogin: onClose } = props;
+import { IModalLogin } from "../../consts";
+
+export const ModalLogin:FC<IModalLogin> = (props) => {
+  const { isOpenModalLogin, onCloseModalLogin } = props;
 
   const initialRef = useRef(null);
   const finalRef = useRef(null);
@@ -69,12 +71,12 @@ export const ModalLogin = (props: { isOpenModalLogin: boolean; onCloseModalLogin
       })
       .finally(() => {
         setIsLoadingButton(false);
-        onClose();
+        onCloseModalLogin();
       });
   };
 
   return (
-    <Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
+    <Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpenModalLogin} onClose={onCloseModalLogin}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Войти в аккаунт</ModalHeader>
@@ -120,7 +122,7 @@ export const ModalLogin = (props: { isOpenModalLogin: boolean; onCloseModalLogin
                     Войти
                   </Button>
 
-                  <Button onClick={onClose}>Закрыть</Button>
+                  <Button onClick={onCloseModalLogin}>Закрыть</Button>
                 </ModalFooter>
               </Form>
             )}

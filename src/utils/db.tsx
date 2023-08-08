@@ -18,8 +18,6 @@ import {
   equalTo,
 } from "firebase/database";
 import {
-  Auth,
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
@@ -63,9 +61,9 @@ export async function deleteUser(password: string) {
 
   const credential = EmailAuthProvider.credential(user.email || "", password);
 
- return reauthenticateWithCredential(user, credential)
+  return reauthenticateWithCredential(user, credential)
     .then((userCredential) => {
-    return  deleteUserFromFirebase(userCredential.user).then(() => {
+      return deleteUserFromFirebase(userCredential.user).then(() => {
         remove(ref(db, "users/" + userCredential.user.uid))
           .then(() => {
             return { type: "success", data: "Аккаунт удален" };
@@ -130,20 +128,9 @@ export function getProducts(filters: IFilters) {
 
 export function createOrder(order: IOrder) {
   const db: Database = getDatabase();
-
-  // const order = {
-  //   items: ICartState;
-  // dateTime: number;
-  // paymentForm: string;
-  // amount: number;
-  // userId:string;
-  // userId_dateTime:string;
-  // };
-
   const newPostKey: string | null = push(child(ref(db), "orders")).key;
   const updates: any = {};
   updates["/orders/" + newPostKey] = order;
-  // updates["/orders/" + uid + "/" + newPostKey] = postData;
 
   return update(ref(db), updates)
     .then(() => {
@@ -162,28 +149,4 @@ export function getOrders() {
   const queryGetProducts = query(ref(db, `orders/`), orderByChild("userId"), equalTo(auth.currentUser?.uid || ""));
 
   return get(queryGetProducts);
-}
-
-export function deleteUserData(username: string, picture: string, title: string, body: string) {
-  const db: Database = getDatabase();
-  const auth: Auth = getAuth();
-
-  const uid: string | undefined = auth.currentUser?.uid;
-  // A post entry.
-  const postData = {
-    author: username,
-    uid: uid,
-    body: body,
-    title: title,
-    starCount: 0,
-    authorPic: picture,
-  };
-  const newPostKey: string | null = push(child(ref(db), "posts")).key;
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  //TODO: replace type any
-  const updates: any = {};
-  updates["/posts/" + newPostKey] = postData;
-  updates["/user-posts/" + uid + "/" + newPostKey] = postData;
-
-  return update(ref(db), updates);
 }

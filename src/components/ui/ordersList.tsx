@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Button, Spinner, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
-import { IOrder } from "../../consts";
+import { IOrder, IOrderList } from "../../consts";
 import ModalOrder from "./modalOrder";
 
-const OrdersList = (props: any) => {
+const OrdersList: FC<IOrderList> = (props) => {
   const propsOrders = props.orders;
 
   const { isOpenModalOrder, onOpenModalOrder, onCloseModalOrder } = props;
@@ -21,7 +21,7 @@ const OrdersList = (props: any) => {
   //   const startSlice = page * sortBy;
   //   const endSclice = startSlice + sortBy;
 
-  const filtredOrders: Array<IOrder> = propsOrders; //.slice(startSlice, endSclice);
+  const filtredOrders = propsOrders; //.slice(startSlice, endSclice);
   const modalOrderHandle = (order: IOrder) => {
     setModalOrder(order);
     onOpenModalOrder();

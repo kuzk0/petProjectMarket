@@ -1,8 +1,9 @@
+import { FC } from "react";
 import { Box, Card, CardBody, CardHeader, Text, Heading, Stack, StackDivider } from "@chakra-ui/react";
 import { PATH } from "../../consts";
 import { Link } from "react-router-dom";
 
-export const Main = () => {
+export const Main: FC = () => {
   return (
     <Card >
       <CardHeader>

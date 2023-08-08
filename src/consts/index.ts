@@ -19,24 +19,64 @@ export const errorCodes: IErrorsCode = {
 export interface IErrorsCode {
   [key: string]: string;
 }
-export interface ISortState {
-  sortID: number;
+export interface IModalCart {
+  isOpenModalCart: boolean;
+  onCloseModalCart: () => void;
 }
-export interface IFilterPriceState {
-  min: number;
-  max: number;
-  default: number[];
+export interface IModalCreateAccount {
+  isOpenModalCreateAccount: boolean;
+  onCloseModalCreateAccount: () => void;
 }
-export interface IUserLoginState {
-  name: string;
-  uid: string;
-  status: "admin" | "user";
-  auth: boolean;
+export interface IModalLogin {
+  isOpenModalLogin: boolean;
+  onCloseModalLogin: () => void;
 }
-export interface ICartState {
-  countCartItem: number;
-  cartList: ICartItem[];
+export interface IModalProduct {
+  isOpenModalProduct: boolean;
+  onCloseModalProduct: () => void;
 }
+export interface IAsideFilters {
+  children: React.ReactNode;
+}
+export interface ICartItemProps {
+  item: ICartItem;
+}
+export interface IFilterMenu {
+  maxPriceProduct: number;
+  minPriceProduct: number;
+}
+export interface IModalOrder {
+  isOpenModalOrder: boolean;
+  onCloseModalOrder: () => void;
+  order: IOrder;
+}
+export interface INav {
+  onOpenModalCart: () => void;
+  onOpenModalLogin: () => void;
+  onOpenModalCreateAccount: () => void;
+}
+export interface IOrderList {
+  orders: IOrder[];
+  isLoaded: boolean;
+  isOpenModalOrder: boolean;
+  onOpenModalOrder: () => void;
+  onCloseModalOrder: () => void;
+}
+export interface IProductCard {
+  product: IProduct;
+  inModal?: boolean;
+  onOpenModalProduct: () => void;
+}
+export interface IProductList {
+  products: IProduct[];
+  onOpenModalProduct: () => void;
+  isLoaded: boolean;
+}
+
+export interface IRatingProductStar {
+  productRating: IProduct["rating"];
+}
+//For store manager
 export interface IOrder {
   status: string;
   items: ICartItem[];
@@ -83,4 +123,27 @@ export interface IFilters {
   page: number;
   sortBy: number;
 }
+
+//TYPES
 export type TThumbValues = [number, number];
+
+//States
+
+export interface ISortState {
+  sortID: number;
+}
+export interface IFilterPriceState {
+  min: number;
+  max: number;
+  default: number[];
+}
+export interface IUserLoginState {
+  name: string;
+  uid: string;
+  status: "admin" | "user";
+  auth: boolean;
+}
+export interface ICartState {
+  countCartItem: number;
+  cartList: ICartItem[];
+}

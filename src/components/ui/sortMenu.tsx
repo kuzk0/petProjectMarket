@@ -14,8 +14,6 @@ const SortMenu: FC = () => {
   const sortType = useSelector((state: RootState) => state.sort.sortID);
 
   const setSortTypeHandle = (e: any) => {
-
-    //TODO: через пропсы только если через dataset или создавать заново меню и передавать свои пропсы
     dispatch(setSort(+e.target.dataset.sorttype));
   };
 
@@ -27,7 +25,7 @@ const SortMenu: FC = () => {
             {SORTTYPES[sortType]}
           </MenuButton>
 
-          <MenuList >
+          <MenuList>
             <MenuItem data-sorttype={0} onClick={setSortTypeHandle}>
               Популярные
             </MenuItem>

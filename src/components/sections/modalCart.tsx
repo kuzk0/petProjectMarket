@@ -17,12 +17,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { CartItem } from "../ui/cartItem";
 import { createOrder } from "../../utils/db";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { auth } from "../../firebase";
-import { IOrder } from "../../consts";
+import { IModalCart, IOrder } from "../../consts";
 import { clearCart } from "../../store/slices/cartSlice";
-export const ModalCart = (props: any) => {
-  const { isOpenModalCart: isOpen, onCloseModalCart: onClose } = props;
+
+export const ModalCart: FC<IModalCart> = (props) => {
+  const { isOpenModalCart, onCloseModalCart } = props;
   const toast = useToast();
 
   const cart = useSelector((state: RootState) => state.cart.cartList);
@@ -58,7 +59,7 @@ export const ModalCart = (props: any) => {
           dispatch(clearCart());
         }
         setIsLoadingButton(false);
-        onClose();
+        onCloseModalCart();
       });
     } else {
       toast({
@@ -70,12 +71,12 @@ export const ModalCart = (props: any) => {
     }
 
     setIsLoadingButton(false);
-    onClose();
+    onCloseModalCart();
   };
 
   return (
     <Box>
-      <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+      <Modal isOpen={isOpenModalCart} onClose={onCloseModalCart} size="3xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Корзина товаров</ModalHeader>
@@ -90,7 +91,7 @@ export const ModalCart = (props: any) => {
                 Купить
               </Button>
             )}
-            <Button onClick={onClose}>Закрыть</Button>
+            <Button onClick={onCloseModalCart}>Закрыть</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

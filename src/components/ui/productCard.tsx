@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { Box, Image, Heading, Stack, Text, Skeleton, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Icon, Badge, useToast } from "@chakra-ui/react";
+import { FC, useState } from "react";
+import { Box, Image, Heading, Stack, Text, Skeleton, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Icon, Badge } from "@chakra-ui/react";
 import { BiShoppingBag } from "react-icons/bi";
-import { IProduct } from "../../consts";
+import { IProductCard, IProduct } from "../../consts";
 import { RatingProductStar } from "./ratingProductStar";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../store/slices/cartSlice";
 import { set } from "../../store/slices/currentProductInModalSlice";
 
-export const ProductCard = (props: any) => {
-  const product: IProduct = props.product;
+export const ProductCard: FC<IProductCard> = (props) => {
+  const product = props.product;
   const inModal = props.inModal || false;
   const [isLoaded, setIsLoaded] = useState(false);
 

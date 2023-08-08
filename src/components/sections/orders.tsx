@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { Flex, useDisclosure } from "@chakra-ui/react";
 
 import { IOrder, PATH } from "../../consts";
@@ -7,9 +8,9 @@ import { useEffect, useState } from "react";
 import OrdersList from "../ui/ordersList";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
-import {  useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
-const Orders = () => {
+export const Orders: FC = () => {
   const { isOpen: isOpenModalOrder, onOpen: onOpenModalOrder, onClose: onCloseModalOrder } = useDisclosure();
   const [ordersState, setOrdersOutput] = useState<{ ordersOutput: IOrder[]; isLoadedOrders: boolean }>({
     ordersOutput: [],
@@ -52,5 +53,3 @@ const Orders = () => {
     </Flex>
   );
 };
-
-export default Orders;

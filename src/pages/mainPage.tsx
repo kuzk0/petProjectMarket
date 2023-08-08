@@ -1,5 +1,7 @@
+import { FC } from "react";
 import MainPageLayout from "../components/layouts/mainPageLayout";
-const MainPage = () => {
+
+const MainPage: FC = () => {
   return <MainPageLayout />;
 };
 

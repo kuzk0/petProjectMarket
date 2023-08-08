@@ -1,16 +1,19 @@
 import { Button, Skeleton, Box, Heading, Stack, Text, Flex, Image, NumberInput, NumberInputField } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 
-import { ICartItem } from "../../consts";
+import { ICartItemProps } from "../../consts";
 import { useDispatch } from "react-redux";
 import { changeCount, deleteItem } from "../../store/slices/cartSlice";
 
-export const CartItem = ({ item }: { item: ICartItem }) => {
+
+
+export const CartItem: FC<ICartItemProps> = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const refInput = useRef(null);
 
   const dispatch = useDispatch();
 
+  const item = props.item;
   const changeCountClick = (changedCountItem: number) => {
     if (changedCountItem <= 0) dispatch(deleteItem(item.product));
     else {

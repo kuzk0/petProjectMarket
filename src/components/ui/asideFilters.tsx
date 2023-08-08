@@ -11,11 +11,12 @@ import {
   DrawerFooter,
   Box,
 } from "@chakra-ui/react";
-import { useState, useRef } from "react";
+import { useState, useRef, FC } from "react";
 import { BsFilterSquare } from "react-icons/bs";
 import SortMenu from "./sortMenu";
+import { IAsideFilters } from "../../consts";
 
-export const AsideFilters = (props: any) => {
+export const AsideFilters: FC<IAsideFilters> = (props) => {
   const [showAside, setShow] = useState(true);
 
   const { isOpen: isOpenAsideFilters, onOpen: onOpenAsideFilters, onClose: onCloseAsideFilters } = useDisclosure();
@@ -23,7 +24,6 @@ export const AsideFilters = (props: any) => {
   const toggleMenu = () => {
     onOpenAsideFilters();
     setShow(!showAside);
-    // console.log(ref);
   };
 
   const btnRef = useRef(null);

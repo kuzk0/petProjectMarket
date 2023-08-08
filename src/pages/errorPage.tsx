@@ -8,8 +8,10 @@ const ErrorPage: FC = () => {
   return (
     <Flex direction="column" h="100vh" justifyContent="center" align="center" maxW={{ xl: "1280px" }} m="0 auto">
       <Card>
-        <CardHeader> 
-          <Heading size="md" textColor="red.600" >Ошибка загрузки</Heading>
+        <CardHeader>
+          <Heading size="md" textColor="red.600">
+            Ошибка загрузки
+          </Heading>
         </CardHeader>
 
         <CardBody>

@@ -4,11 +4,13 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { ICartItem, ICartState, IProduct } from "../../consts";
 import { setUserCart } from "../../utils/db";
 import { initialStatCart } from "../inititalState";
+
 const updateCartHandle = (cart: ICartItem[]) => {
   setUserCart(cart).catch((error) => {
     console.log(error);
   });
 };
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState: initialStatCart,
@@ -20,13 +22,13 @@ export const cartSlice = createSlice({
           count: 1,
         });
         state.countCartItem++;
-        updateCartHandle(state.cartList)
+        updateCartHandle(state.cartList);
       }
     },
     changeCount(state, action: PayloadAction<ICartItem>) {
       state.cartList[state.cartList.findIndex((cartItem) => cartItem.product.id === action.payload.product.id)].count =
         action.payload.count < 0 ? 0 : action.payload.count;
-        updateCartHandle(state.cartList)
+      updateCartHandle(state.cartList);
     },
     deleteItem(state, action: PayloadAction<IProduct>) {
       if (
@@ -36,17 +38,17 @@ export const cartSlice = createSlice({
         )
       )
         state.countCartItem--;
-        updateCartHandle(state.cartList)
+      updateCartHandle(state.cartList);
     },
     clearCart(state) {
       state.cartList = [];
       state.countCartItem = 0;
-      updateCartHandle(state.cartList)
+      updateCartHandle(state.cartList);
     },
     updateCart(state, action: PayloadAction<ICartState>) {
       state.cartList = action.payload.cartList;
       state.countCartItem = action.payload.countCartItem;
-      updateCartHandle(state.cartList)
+      updateCartHandle(state.cartList);
     },
   },
 });

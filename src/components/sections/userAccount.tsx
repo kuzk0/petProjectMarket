@@ -36,6 +36,7 @@ import { Field, Form, Formik } from "formik";
 import { passwordSchema } from "../../utils/loginSchema";
 
 export const UserAccount: FC = () => {
+  
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<User>({} as User);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
@@ -53,7 +54,7 @@ export const UserAccount: FC = () => {
     });
   }, [navigate]);
 
-  const deleteAccountHandle = ({ password }: { password: string }) => {
+  const deleteAccountHandle= (password:string) => {
     deleteUser(password).then((result) => {
       if (result?.type === "error") {
         toast({
@@ -97,7 +98,7 @@ export const UserAccount: FC = () => {
             validationSchema={passwordSchema}
             onSubmit={(values, { resetForm }) => {
               setIsLoadingButton(true);
-              deleteAccountHandle(values);
+              deleteAccountHandle(values.password);
             }}
           >
             {({ errors, touched }) => (

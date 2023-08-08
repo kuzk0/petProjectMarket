@@ -16,16 +16,18 @@ import {
   FormControl,
   useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { FC, useState } from "react";
 
 import { Field, Form, Formik } from "formik";
 
 import { createAccountSchema } from "../../utils/loginSchema";
 import { createUser } from "../../utils/db";
-import {  useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/userSlice";
-export const ModalCreateAccount = (props: { isOpenModalCreateAccount: boolean; onCloseModalCreateAccount: () => void }) => {
-  const { isOpenModalCreateAccount: isOpen, onCloseModalCreateAccount: onClose } = props;
+import { IModalCreateAccount } from "../../consts";
+
+export const ModalCreateAccount: FC<IModalCreateAccount> = (props) => {
+  const { isOpenModalCreateAccount, onCloseModalCreateAccount } = props;
 
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [showConfirmPasswordInput, setShowConfirmPasswordInput] = useState(false);
@@ -51,12 +53,12 @@ export const ModalCreateAccount = (props: { isOpenModalCreateAccount: boolean; o
         });
       } else {
         dispatch(login({ name: name, uid: result.data, auth: true, status: "user" }));
-        onClose();
+        onCloseModalCreateAccount();
       }
     });
   };
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpenModalCreateAccount} onClose={onCloseModalCreateAccount}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Создать аккаунт</ModalHeader>
@@ -70,7 +72,7 @@ export const ModalCreateAccount = (props: { isOpenModalCreateAccount: boolean; o
               confirmPassword: "",
             }}
             validationSchema={createAccountSchema}
-            onSubmit={(values, { resetForm }) => {
+            onSubmit={(values) => {
               handleClickCreateAccount(values);
             }}
           >
@@ -126,7 +128,7 @@ export const ModalCreateAccount = (props: { isOpenModalCreateAccount: boolean; o
                     Создать аккаунт
                   </Button>
 
-                  <Button onClick={onClose}>Закрыть</Button>
+                  <Button onClick={onCloseModalCreateAccount}>Закрыть</Button>
                 </ModalFooter>
               </Form>
             )}

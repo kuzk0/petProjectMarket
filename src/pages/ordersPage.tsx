@@ -1,6 +1,8 @@
+import { FC } from "react";
 import OrdersPageLayout from "../components/layouts/ordersPageLayout";
-function OrdersPage() {
+
+const OrdersPage: FC = () => {
   return <OrdersPageLayout />;
-}
+};
 
 export default OrdersPage;

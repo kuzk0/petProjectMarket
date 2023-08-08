@@ -6,7 +6,7 @@ import { ModalCart } from "./modalCart";
 import { Nav } from "../ui/nav";
 import { ModalCreateAccount } from "./modalCreateAccount";
 
-export const Header: FC = (props: any) => {
+export const Header: FC = () => {
   const { isOpen: isOpenModalLogin, onOpen: onOpenModalLogin, onClose: onCloseModalLogin } = useDisclosure();
   const { isOpen: isOpenModalCart, onOpen: onOpenModalCart, onClose: onCloseModalCart } = useDisclosure();
   const { isOpen: isOpenModalCreateAccount, onOpen: onOpenModalCreateAccount, onClose: onCloseModalCreateAccount } = useDisclosure();
@@ -14,7 +14,7 @@ export const Header: FC = (props: any) => {
   const toggleMenu = () => setShow(!show);
 
   return (
-    <Flex as="nav" align="center" justify="flex-end" wrap="wrap" w="100%" mb={8} p={8} {...props}>
+    <Flex as="nav" align="center" justify="flex-end" wrap="wrap" w="100%" mb={8} p={8}>
       <Button display={{ base: "block", md: "none" }} onClick={toggleMenu}>
         {show ? <CloseIcon /> : <HamburgerIcon />}
       </Button>

@@ -1,13 +1,12 @@
 import { Spinner, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { IProduct } from "../../consts";
+import { IProduct, IProductList } from "../../consts";
 import { RootState } from "../../store";
 import { ProductCard } from "./productCard";
+import { FC, Fragment } from "react";
 
-export const ProductList = (props: any) => {
-  const propsProducts = props.products;
-
-  const { onOpenModalProduct } = props;
+export const ProductList: FC<IProductList> = (props) => {
+  const { onOpenModalProduct, products, isLoaded } = props;
   const filterPriceValues = useSelector((state: RootState) => state.filterPrice.default);
   const sortType = useSelector((state: RootState) => state.sort.sortID);
 
@@ -16,7 +15,7 @@ export const ProductList = (props: any) => {
   const startSlice = page * sortBy;
   const endSclice = startSlice + sortBy;
 
-  const filtredProducts: Array<IProduct> = propsProducts
+  const filtredProducts = products
     .filter((value: IProduct) => value.price >= filterPriceValues[0] && value.price <= filterPriceValues[1])
     .sort((a: IProduct, b: IProduct) => {
       switch (sortType) {
@@ -35,8 +34,8 @@ export const ProductList = (props: any) => {
     .slice(startSlice, endSclice);
 
   return (
-    <>
-      {props.isLoaded ? (
+    <Fragment>
+      {isLoaded ? (
         filtredProducts.length ? (
           filtredProducts.map((product: IProduct) => <ProductCard onOpenModalProduct={onOpenModalProduct} key={product.id} product={product} />)
         ) : (
@@ -45,6 +44,6 @@ export const ProductList = (props: any) => {
       ) : (
         <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
       )}
-    </>
+    </Fragment>
   );
 };

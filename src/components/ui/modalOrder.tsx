@@ -17,11 +17,11 @@ import {
   Tr,
   Text,
 } from "@chakra-ui/react";
-import { IOrder } from "../../consts";
-import { Fragment } from "react";
+import { IModalOrder } from "../../consts";
+import { FC, Fragment } from "react";
 
-const ModalOrder = (props: any) => {
-  const { isOpenModalOrder, onCloseModalOrder, order }: { isOpenModalOrder: boolean; onCloseModalOrder: () => void; order: IOrder } = props;
+const ModalOrder: FC<IModalOrder> = (props) => {
+  const { isOpenModalOrder, onCloseModalOrder, order } = props;
 
   return (
     <Drawer isOpen={isOpenModalOrder} placement="right" size="lg" onClose={onCloseModalOrder}>

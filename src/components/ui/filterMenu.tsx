@@ -17,21 +17,21 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 
 import { setMin, setMax, setFromTo } from "../../store/slices/filterPriceProductSlice";
-
+import { IFilterMenu } from "../../consts";
 
 /**finalChangeFilterTimeouter
  *  Необходимо вынести за компонент, потому что из-за особенности функциональных компонент,
  * создается новый экземпляр, который не очищается через clearTimeout, из-за нового id (Timer)
  */
 let finalChangeFilterTimeouter: NodeJS.Timeout;
-export const FilterMenu = (props: { maxPriceProduct: number; minPriceProduct: number }) => {
 
+export const FilterMenu: FC<IFilterMenu> = (props) => {
   const refInputFrom = useRef<HTMLInputElement>(null);
   const refInputTo = useRef<HTMLInputElement>(null);
 
@@ -67,10 +67,13 @@ export const FilterMenu = (props: { maxPriceProduct: number; minPriceProduct: nu
     // if (props.minPriceProduct !== minFilterPriceValue) dispatch(setMin(props.minPriceProduct));
     // if (props.maxPriceProduct !== maxFilterPriceValue) dispatch(setMax(props.maxPriceProduct));
     setFilterPriceValues([props.minPriceProduct, props.maxPriceProduct]);
-  }, [props.minPriceProduct, props.maxPriceProduct, 
+  }, [
+    props.minPriceProduct,
+    props.maxPriceProduct,
     // minFilterPriceValue,
     //  maxFilterPriceValue,
-      dispatch]);
+    dispatch,
+  ]);
 
   return (
     <Box h={600} w="100%" pos="sticky" top="20px">

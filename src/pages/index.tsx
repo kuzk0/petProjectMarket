@@ -6,7 +6,8 @@ import { auth } from "../firebase";
 import { updateCart } from "../store/slices/cartSlice";
 import { login, signOut } from "../store/slices/userSlice";
 import { getUserCart } from "../utils/db";
-export const TestPage = () => {
+
+const LayoutPage = () => {
   const dispatch = useDispatch();
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -33,3 +34,4 @@ export const TestPage = () => {
     </>
   );
 };
+export default LayoutPage;

@@ -7,14 +7,14 @@ import { PATH } from "../consts";
 import MainPage from "../pages/mainPage";
 import ProductsPage from "../pages/productsPage";
 import OrdersPage from "../pages/ordersPage";
-import { TestPage } from "../pages/";
+import LayoutPage  from "../pages/";
 import ErrorPage from "../pages/errorPage";
 import UserPage from "../pages/userPage";
 
 export const Router: FC = () => {
   const router = createBrowserRouter([
     {
-      element: <TestPage />,
+      element: <LayoutPage />,
       errorElement: <ErrorPage />,
       children: [
         {
