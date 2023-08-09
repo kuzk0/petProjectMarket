@@ -1,7 +1,6 @@
 import {
   Flex,
   Button,
-  Link as LinkUI,
   useColorModeValue,
   useColorMode,
   Text,
@@ -12,11 +11,12 @@ import {
   MenuItem,
   MenuList,
   useToast,
+  Box,
 } from "@chakra-ui/react";
 
 import { FC, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { INav, PATH } from "../../consts";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -65,12 +65,32 @@ export const Nav: FC<INav> = (props) => {
   };
   return (
     <Flex align="center" justify={{ base: "center", md: "flex-end" }} direction={{ base: "column", md: "row" }} pt={{ base: 4, sm: 0 }}>
-      <LinkUI as={Link} mb={{ base: 8, md: 0 }} mr={{ base: 0, md: 8 }} to={PATH.MAIN}>
-        Главная
-      </LinkUI>
-      <LinkUI as={Link} mb={{ base: 8, md: 0 }} mr={{ base: 0, md: 8 }} to={PATH.PRODUCTS}>
-        Товары
-      </LinkUI>
+      <Box p="5px 10px" mr={{ base: 0, md: 8 }}>
+        <NavLink
+          to={PATH.MAIN}
+          style={({ isActive }) => ({
+            background: isActive ? "#a5a5a52b" : "inherit",
+            padding: "5px 10px",
+            borderRadius: "var(--chakra-radii-md)",
+            textDecoration: "underline",
+          })}
+        >
+          Главная
+        </NavLink>
+      </Box>
+      <Box p="5px 10px" mr={{ base: 0, md: 8 }}>
+        <NavLink
+          to={PATH.PRODUCTS}
+          style={({ isActive }) => ({
+            background: isActive ? "#a5a5a52b" : "inherit",
+            padding: "5px 10px",
+            borderRadius: "var(--chakra-radii-md)",
+            textDecoration: "underline",
+          })}
+        >
+          Товары
+        </NavLink>
+      </Box>
 
       <Button
         mb={{ base: 8, md: 0 }}

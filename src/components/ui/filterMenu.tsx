@@ -55,7 +55,6 @@ export const FilterMenu: FC<IFilterMenu> = (props) => {
 
   /**  finalChangeFilter
    * окончательное изменение фильтра цены, инфу которого можно уже отправлять для корректировки данных.
-   * onblur на input тоже вызывает эту функцию даже, если изменений не было.
    */
   const finalChangeFilter = (filterPriceValue?: number[], min?: number, max?: number) => {
     if (filterPriceValue) dispatch(setFromTo(filterPriceValue));
@@ -115,6 +114,7 @@ export const FilterMenu: FC<IFilterMenu> = (props) => {
                 value={filterPriceThumbValues[0]}
                 onChange={(value) => thumbPropsUpdate(+value, +refInputTo.current!.value || 0)}
                 aria-label="filterPriceFrom"
+                allowMouseWheel
               >
                 <NumberInputField ref={refInputFrom} />
                 <NumberInputStepper>
@@ -131,6 +131,7 @@ export const FilterMenu: FC<IFilterMenu> = (props) => {
                 value={filterPriceThumbValues[1]}
                 onChange={(value) => thumbPropsUpdate(+refInputFrom.current!.value || 0, +value)}
                 aria-label="filterPriceTo"
+                allowMouseWheel
               >
                 <NumberInputField ref={refInputTo} />
                 <NumberInputStepper>

@@ -1,4 +1,4 @@
-import { ISortState, IFilterPriceState, IUserLoginState, ICartState, ICurrentProductInModal } from "../consts";
+import { ISortState, IFilterPriceState, IUserLoginState, ICartState, ICurrentProductInModal, IPaginationState } from "../consts";
 
 export const initialStateSort: ISortState = {
   sortID: 0,
@@ -17,6 +17,12 @@ export const initialStateLoginUser: IUserLoginState = {
 export const initialStatCart: ICartState = {
   countCartItem: 0,
   cartList: [],
+};
+export const initialStatePagination: IPaginationState = {
+  orderCurrentPage: 1,
+  productCurrentPage: 1,
+  orderSortBy: 10,
+  productSortBy: 10,
 };
 export const initialStateCurrentProductInModal: ICurrentProductInModal = {
   product: {

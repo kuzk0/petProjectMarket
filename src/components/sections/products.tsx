@@ -1,4 +1,4 @@
-import { Grid, GridItem, Flex, useDisclosure } from "@chakra-ui/react";
+import { Grid, GridItem, useDisclosure } from "@chakra-ui/react";
 
 import { FilterMenu } from "../ui/filterMenu";
 import { AsideFilters } from "../ui/asideFilters";
@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { getProducts } from "../../utils/db";
 import { FC, useEffect, useState } from "react";
 import { ProductList } from "../ui/productList";
+import { Pagination } from "../ui/pagination";
 
 export const Products: FC = () => {
   const filterPriceValues = useSelector((state: RootState) => state.filterPrice.default);
@@ -24,6 +25,11 @@ export const Products: FC = () => {
 
   let maxPriceProduct: number = 0;
   let minPriceProduct: number = 0;
+
+  const page = useSelector((state: RootState) => state.pagination.productCurrentPage) - 1;
+  const sortBy = useSelector((state: RootState) => state.pagination.productSortBy);
+
+  const countPages = Math.ceil(productsState.productsOutput.length / sortBy);
 
   useEffect(() => {
     setProductsOutput({ productsOutput: [], isLoadedProducts: false });
@@ -76,11 +82,11 @@ export const Products: FC = () => {
         <FilterMenu minPriceProduct={filterPriceValues[0]} maxPriceProduct={filterPriceValues[1]} />
       </GridItem>
       <GridItem area="main">
-        <Flex rounded="2xl" gap={10} flexWrap="wrap" justifyContent="space-evenly">
-          <ProductList products={productsState.productsOutput} onOpenModalProduct={onOpenModalProduct} isLoaded={productsState.isLoadedProducts} />
-        </Flex>
+        <ProductList products={productsState.productsOutput} onOpenModalProduct={onOpenModalProduct} isLoaded={productsState.isLoadedProducts} />
       </GridItem>
-      <GridItem w="100%" h={50} bg="gray" area="footer"></GridItem>
+      <GridItem w="100%" area="footer">
+        <Pagination page={page} sortBy={sortBy} countPages={countPages} list="products"></Pagination>
+      </GridItem>
       <ModalProduct isOpenModalProduct={isOpenModalProduct} onCloseModalProduct={onCloseModalProduct} />
     </Grid>
   );

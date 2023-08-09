@@ -78,6 +78,12 @@ export interface ICurrentProductInModal {
 export interface IRatingProductStar {
   productRating: IProduct["rating"];
 }
+export interface IPagination {
+  page: number;
+  sortBy: number;
+  countPages: number;
+  list:string;
+}
 //For store manager
 export interface IOrder {
   status: string;
@@ -121,6 +127,12 @@ export interface IFilters {
   sortType: number;
   page: number;
   sortBy: number;
+}
+export interface IPaginationState {
+  orderCurrentPage: number;
+  productCurrentPage: number;
+  orderSortBy: number;
+  productSortBy: number;
 }
 
 //TYPES
