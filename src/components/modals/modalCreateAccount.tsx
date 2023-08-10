@@ -72,9 +72,7 @@ export const ModalCreateAccount: FC<IModalCreateAccount> = (props) => {
               confirmPassword: "",
             }}
             validationSchema={createAccountSchema}
-            onSubmit={(values) => {
-              handleClickCreateAccount(values);
-            }}
+            onSubmit={handleClickCreateAccount}
           >
             {({ errors, touched }) => (
               <Form>
@@ -83,7 +81,7 @@ export const ModalCreateAccount: FC<IModalCreateAccount> = (props) => {
                   <Field as={Input} name="name" type="text" autoComplete="name" />
 
                   <Box minH="30px">
-                    <Text color="darkred">{errors.name && touched.name && errors.name} </Text>
+                    <Text color="red.400">{errors.name} </Text>
                   </Box>
                 </FormControl>
                 <FormControl>
@@ -91,7 +89,7 @@ export const ModalCreateAccount: FC<IModalCreateAccount> = (props) => {
                   <Field as={Input} name="email" type="email" autoComplete="email" />
 
                   <Box minH="30px">
-                    <Text color="darkred">{errors.email && touched.email && errors.email} </Text>
+                    <Text color="red.400">{errors.email} </Text>
                   </Box>
                 </FormControl>
                 <FormControl>
@@ -107,7 +105,7 @@ export const ModalCreateAccount: FC<IModalCreateAccount> = (props) => {
                 </FormControl>
 
                 <Box minH="30px">
-                  <Text color="darkred">{errors.password && touched.password && errors.password} </Text>
+                  <Text color="red.400">{errors.password} </Text>
                 </Box>
 
                 <FormLabel>Подтвердите пароль:</FormLabel>
@@ -121,7 +119,7 @@ export const ModalCreateAccount: FC<IModalCreateAccount> = (props) => {
                 </InputGroup>
 
                 <Box minH="30px">
-                  <Text color="darkred">{errors.confirmPassword && touched.confirmPassword && errors.confirmPassword} </Text>
+                  <Text color="red.400">{errors.confirmPassword} </Text>
                 </Box>
                 <ModalFooter p={0}>
                   <Button colorScheme="blue" mr={3} type="submit" isLoading={isLoadingButton}>

@@ -9,11 +9,9 @@ import {
   Database,
   remove,
   orderByChild,
-  limitToFirst,
   startAt,
   endAt,
   query,
-  limitToLast,
   QueryConstraint,
   equalTo,
 } from "firebase/database";
@@ -107,10 +105,11 @@ export function getProducts(filters: IFilters) {
       queryConstraint = [orderByChild("rating/count")]; //b.rating.count - a.rating.count;limitToLast(filters.sortBy * filters.page)
       break;
     case 1:
-      queryConstraint = [orderByChild("price"), startAt(filters.min), endAt(filters.max), limitToFirst(filters.sortBy * filters.page)]; //a.price - b.price;
+      queryConstraint = [orderByChild("price"), startAt(filters.min), endAt(filters.max)]; //a.price - b.price;   limitToFirst(filters.sortBy * filters.page)
       break;
     case 2:
-      queryConstraint = [orderByChild("price"), startAt(filters.min), endAt(filters.max), limitToLast(filters.sortBy * filters.page)]; //a.price - b.price;
+      queryConstraint = [orderByChild("price"), startAt(filters.min), endAt(filters.max)]; //a.price - b.price;  limitToLast(filters.sortBy * filters.page)
+      // queryConstraint = [orderByChild("price"), startAt(filters.min), endAt(filters.max), limitToLast(filters.sortBy * filters.page)]; //a.price - b.price;
       break;
     case 3:
       queryConstraint = [orderByChild("rating/rate")]; //b.rating.rate - a.rating.rate;  limitToLast(filters.sortBy * filters.page)

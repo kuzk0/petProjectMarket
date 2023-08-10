@@ -29,11 +29,13 @@ export const Products: FC = () => {
   const page = useSelector((state: RootState) => state.pagination.productCurrentPage) - 1;
   const sortBy = useSelector((state: RootState) => state.pagination.productSortBy);
 
-  const countPages = Math.ceil(productsState.productsOutput.length / sortBy);
+  const filtredProducts = productsState.productsOutput.filter((value: IProduct) => value.price >= filterPriceValues[0] && value.price <= filterPriceValues[1]);
+
+  const countPages = Math.ceil(filtredProducts.length / sortBy);
 
   useEffect(() => {
     setProductsOutput({ productsOutput: [], isLoadedProducts: false });
-    getProducts({ min: filterPriceValues[0], max: filterPriceValues[1], page: 1, sortType: sortType, sortBy: 10 }).then((snapshot) => {
+    getProducts({ min: filterPriceValues[0], max: filterPriceValues[1], page: page, sortType: sortType, sortBy: sortBy }).then((snapshot) => {
       if (snapshot.exists()) {
         const productListDb: IProduct[] = [];
         snapshot.forEach((element) => {
@@ -48,7 +50,6 @@ export const Products: FC = () => {
           // eslint-disable-next-line react-hooks/exhaustive-deps
           maxPriceProduct = Math.max.apply(null, arrPrice);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
 
         setProductsOutput({ productsOutput: productListDb, isLoadedProducts: true });
       } else {
@@ -82,12 +83,12 @@ export const Products: FC = () => {
         <FilterMenu minPriceProduct={filterPriceValues[0]} maxPriceProduct={filterPriceValues[1]} />
       </GridItem>
       <GridItem area="main">
-        <ProductList products={productsState.productsOutput} onOpenModalProduct={onOpenModalProduct} isLoaded={productsState.isLoadedProducts} />
+        <ProductList products={filtredProducts} onOpenModalProduct={onOpenModalProduct} isLoaded={productsState.isLoadedProducts} />
       </GridItem>
       <GridItem w="100%" area="footer">
         <Pagination page={page} sortBy={sortBy} countPages={countPages} list="products"></Pagination>
       </GridItem>
-      <ModalProduct isOpenModalProduct={isOpenModalProduct} onCloseModalProduct={onCloseModalProduct} />
+      <ModalProduct isOpenModalProduct={isOpenModalProduct} onOpenModalProduct={onOpenModalProduct} onCloseModalProduct={onCloseModalProduct} />
     </Grid>
   );
 };

@@ -6,7 +6,6 @@ const ProductsPageLayout: FC = () => {
   return (
     <Flex direction="column" align="center" maxW={{ xl: "1280px" }} m="0 auto">
       <Products />
-      {/* <Footer /> */}
     </Flex>
   );
 };

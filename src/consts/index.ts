@@ -34,6 +34,7 @@ export interface IModalLogin {
 export interface IModalProduct {
   isOpenModalProduct: boolean;
   onCloseModalProduct: () => void;
+  onOpenModalProduct: () => void;
 }
 export interface IAsideFilters {
   children: React.ReactNode;
@@ -57,7 +58,6 @@ export interface INav {
 }
 export interface IOrderList {
   orders: IOrder[];
-  isLoaded: boolean;
   isOpenModalOrder: boolean;
   onOpenModalOrder: () => void;
   onCloseModalOrder: () => void;
@@ -82,8 +82,24 @@ export interface IPagination {
   page: number;
   sortBy: number;
   countPages: number;
-  list:string;
+  list: string;
 }
+export interface IPaginationButton {
+  page: number;
+  pageChangeHandle: (newPage: number) => void;
+}
+export interface IButtonNext extends IPaginationButton {
+  countPages: number;
+}
+export interface IButtonPrev extends IPaginationButton {}
+export interface IButtonPage extends IPaginationButton {
+  iterator: number;
+}
+export interface IButtonStart extends IPaginationButton {}
+export interface IButtonEnd extends IPaginationButton {
+  countPages: number;
+}
+
 //For store manager
 export interface IOrder {
   status: string;
@@ -97,6 +113,11 @@ export interface IOrder {
 export interface ICartItem {
   product: IProduct;
   count: number;
+}
+export interface IOrderCard {
+  order: IOrder;
+  setModalOrder: React.Dispatch<React.SetStateAction<IOrder>>;
+  onOpenModalOrder: () => void;
 }
 export interface IProduct extends Object {
   id: number;

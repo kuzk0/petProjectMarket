@@ -14,7 +14,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { Link, NavLink } from "react-router-dom";
 import { INav, PATH } from "../../consts";
@@ -29,8 +29,9 @@ import { FaUserLarge } from "react-icons/fa6";
 import { FaUserEdit } from "react-icons/fa";
 import { RiFileList3Line } from "react-icons/ri";
 
-import { signOutUser } from "../../utils/db";
+import { getUserCart, signOutUser } from "../../utils/db";
 import { signOut } from "../../store/slices/userSlice";
+import { clearCart, updateCart } from "../../store/slices/cartSlice";
 
 export const Nav: FC<INav> = (props) => {
   const { onOpenModalCart, onOpenModalLogin, onOpenModalCreateAccount } = props;
@@ -42,7 +43,20 @@ export const Nav: FC<INav> = (props) => {
   const countCartItem = useSelector((state: RootState) => state.cart.countCartItem);
   const loginUser = useSelector((state: RootState) => state.loginUser);
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    getUserCart(loginUser.uid).then((dataSnapshot) => {
+      if (dataSnapshot.exists()) {
+        const cartData = dataSnapshot.val();
+        dispatch(
+          updateCart({
+            countCartItem: cartData.length,
+            cartList: cartData,
+          })
+        );
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loginUser]);
   const toast = useToast();
 
   const signOutHandle = () => {
@@ -50,6 +64,7 @@ export const Nav: FC<INav> = (props) => {
     signOutUser()
       .then(() => {
         dispatch(signOut());
+        dispatch(clearCart());
         setIsLoadingButton(false);
       })
       .catch((error) => {

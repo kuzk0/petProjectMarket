@@ -7,7 +7,7 @@ import { FC } from "react";
 
 export const ProductList: FC<IProductList> = (props) => {
   const { onOpenModalProduct, products, isLoaded } = props;
-  const filterPriceValues = useSelector((state: RootState) => state.filterPrice.default);
+
   const sortType = useSelector((state: RootState) => state.sort.sortID);
 
   const page = useSelector((state: RootState) => state.pagination.productCurrentPage) - 1;
@@ -16,7 +16,6 @@ export const ProductList: FC<IProductList> = (props) => {
   const endSclice = startSlice + sortBy;
 
   const filtredProducts = products
-    .filter((value: IProduct) => value.price >= filterPriceValues[0] && value.price <= filterPriceValues[1])
     .sort((a: IProduct, b: IProduct) => {
       switch (sortType) {
         case 0:
@@ -27,9 +26,9 @@ export const ProductList: FC<IProductList> = (props) => {
           return b.price - a.price;
         case 3:
           return b.rating.rate - a.rating.rate;
+        default:
+          return b.rating.count - a.rating.count;
       }
-      //Очень важный return 0, иначе не может отсортировать и ошибка идет на  уровне IDE (number|undefinded)
-      return 0;
     })
     .slice(startSlice, endSclice);
 

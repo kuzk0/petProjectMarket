@@ -18,7 +18,7 @@ import {
   LinkOverlay,
 } from "@chakra-ui/react";
 import { BiShoppingBag } from "react-icons/bi";
-import { IProductCard, IProduct } from "../../consts";
+import { IProductCard } from "../../consts";
 import { RatingProductStar } from "./ratingProductStar";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../store/slices/cartSlice";
@@ -34,9 +34,7 @@ export const ProductCard: FC<IProductCard> = (props) => {
 
   const dispatch = useDispatch();
 
-  const addCartItemHandle = (product: IProduct) => {
-    dispatch(addItem(product));
-  };
+  const addCartItemHandle = () => dispatch(addItem(product));
 
   const onOpenModalProductHandle = () => {
     if (!inModal) {
@@ -44,19 +42,23 @@ export const ProductCard: FC<IProductCard> = (props) => {
     }
   };
 
+  const setIsLoadedTrue = () => setIsLoaded(true);
+
   useEffect(() => {
-    if (Number(productId) === product.id) {
+    if (Number(productId) === product.id && !inModal) {
       onOpenModalProduct();
       dispatch(set(product));
     }
-  }, [onOpenModalProduct, product, productId, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product, productId]);
+
   return (
     <LinkBox as="article">
       <Card maxW={inModal ? "100%" : { base: "100%", sm: "300px", md: "100%", lg: "300px" }} shadow="2xl">
         <CardBody onClick={onOpenModalProductHandle} cursor={inModal ? "auto" : "pointer"}>
           <Box h="300px">
             <Skeleton h="inherit" m="0 auto" maxH="100%" isLoaded={isLoaded} display="flex" flexDir="column" justifyContent="center" borderRadius="lg">
-              <Image src={product.image} alt={product.title} maxH="100%" m="0 auto" borderRadius="lg" onLoad={() => setIsLoaded(true)} />
+              <Image src={product.image} alt={product.title} maxH="100%" m="0 auto" borderRadius="lg" onLoad={setIsLoadedTrue} />
             </Skeleton>
           </Box>
           <Stack mt="6" spacing="3">
@@ -84,7 +86,7 @@ export const ProductCard: FC<IProductCard> = (props) => {
         <Divider />
         <CardFooter>
           <ButtonGroup spacing="2" w="100%" justifyContent="center">
-            <Button variant="solid" colorScheme="blue" onClick={() => addCartItemHandle(product)}>
+            <Button variant="solid" colorScheme="blue" onClick={addCartItemHandle}>
               В корзину
               <Icon ml={2} as={BiShoppingBag} />
             </Button>

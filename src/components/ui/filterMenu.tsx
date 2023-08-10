@@ -25,15 +25,10 @@ import { RootState } from "../../store";
 import { setMin, setMax, setFromTo } from "../../store/slices/filterPriceProductSlice";
 import { IFilterMenu } from "../../consts";
 
-/**finalChangeFilterTimeouter
- *  Необходимо вынести за компонент, потому что из-за особенности функциональных компонент,
- * создается новый экземпляр, который не очищается через clearTimeout, из-за нового id (Timer)
- */
-let finalChangeFilterTimeouter: NodeJS.Timeout;
-
 export const FilterMenu: FC<IFilterMenu> = (props) => {
   const refInputFrom = useRef<HTMLInputElement>(null);
   const refInputTo = useRef<HTMLInputElement>(null);
+  let finalChangeFilterTimeouter = useRef<NodeJS.Timeout>();
 
   const dispatch = useDispatch();
 
@@ -44,11 +39,11 @@ export const FilterMenu: FC<IFilterMenu> = (props) => {
   const [filterPriceThumbValues, setFilterPriceValues] = useState(defaultFilterPriceValues);
   const stepFilterPriceValue = 1;
 
-  const thumbPropsUpdate = (thumbValue1: number, thumbValue2: number) => {
+  const thumbPropsUpdate = ([thumbValue1, thumbValue2]: number[]) => {
     setFilterPriceValues([thumbValue1, thumbValue2]);
 
-    clearTimeout(finalChangeFilterTimeouter);
-    finalChangeFilterTimeouter = setTimeout(() => {
+    clearTimeout(finalChangeFilterTimeouter.current);
+    finalChangeFilterTimeouter.current = setTimeout(() => {
       finalChangeFilter([thumbValue1, thumbValue2]);
     }, 500);
   };
@@ -60,6 +55,13 @@ export const FilterMenu: FC<IFilterMenu> = (props) => {
     if (filterPriceValue) dispatch(setFromTo(filterPriceValue));
     if (min) dispatch(setMin(min));
     if (max) dispatch(setMax(max));
+  };
+
+  const inputFromChangeHandle = (value: string) => {
+    thumbPropsUpdate([+value, +refInputTo.current!.value || 0]);
+  };
+  const inputToChangeHandle = (value: string) => {
+    thumbPropsUpdate([+refInputFrom.current!.value || 0, +value]);
   };
 
   useEffect(() => {
@@ -91,7 +93,7 @@ export const FilterMenu: FC<IFilterMenu> = (props) => {
               min={minFilterPriceValue}
               max={maxFilterPriceValue}
               step={stepFilterPriceValue}
-              onChange={(val) => thumbPropsUpdate(val[0], val[1])}
+              onChange={thumbPropsUpdate}
               value={filterPriceThumbValues}
             >
               <RangeSliderTrack>
@@ -112,7 +114,7 @@ export const FilterMenu: FC<IFilterMenu> = (props) => {
                 min={minFilterPriceValue}
                 max={filterPriceThumbValues[1]}
                 value={filterPriceThumbValues[0]}
-                onChange={(value) => thumbPropsUpdate(+value, +refInputTo.current!.value || 0)}
+                onChange={inputFromChangeHandle}
                 aria-label="filterPriceFrom"
                 allowMouseWheel
               >
@@ -129,7 +131,7 @@ export const FilterMenu: FC<IFilterMenu> = (props) => {
                 min={filterPriceThumbValues[0]}
                 max={maxFilterPriceValue}
                 value={filterPriceThumbValues[1]}
-                onChange={(value) => thumbPropsUpdate(+refInputFrom.current!.value || 0, +value)}
+                onChange={inputToChangeHandle}
                 aria-label="filterPriceTo"
                 allowMouseWheel
               >

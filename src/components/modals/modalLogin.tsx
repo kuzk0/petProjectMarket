@@ -27,7 +27,7 @@ import { updateCart } from "../../store/slices/cartSlice";
 import { login } from "../../store/slices/userSlice";
 import { IModalLogin } from "../../consts";
 
-export const ModalLogin:FC<IModalLogin> = (props) => {
+export const ModalLogin: FC<IModalLogin> = (props) => {
   const { isOpenModalLogin, onCloseModalLogin } = props;
 
   const initialRef = useRef(null);
@@ -88,18 +88,15 @@ export const ModalLogin:FC<IModalLogin> = (props) => {
               password: "",
             }}
             validationSchema={loginSchema}
-            onSubmit={(values, { resetForm }) => {
-              signInHandle(values);
-            }}
+            onSubmit={signInHandle}
           >
             {({ errors, touched }) => (
               <Form>
                 <FormControl>
                   <FormLabel>Email:</FormLabel>
                   <Field as={Input} name="email" type="email" autoComplete="email" />
-
                   <Box minH="30px">
-                    <Text color="darkred">{errors.email && touched.email && errors.email} </Text>
+                    <Text color="red.400">{errors.email} </Text>
                   </Box>
                 </FormControl>
                 <FormControl>
@@ -114,7 +111,7 @@ export const ModalLogin:FC<IModalLogin> = (props) => {
                   </InputGroup>
                 </FormControl>
                 <Box minH="30px">
-                  <Text color="darkred">{errors.password && touched.password && errors.password} </Text>
+                  <Text color="red.400">{errors.password} </Text>
                 </Box>
 
                 <ModalFooter p={0}>

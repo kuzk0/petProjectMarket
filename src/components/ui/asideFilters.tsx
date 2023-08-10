@@ -45,7 +45,11 @@ export const AsideFilters: FC<IAsideFilters> = (props) => {
             </Box>
           </DrawerBody>
 
-          <DrawerFooter></DrawerFooter>
+          <DrawerFooter>
+            <Button variant="outline" mr={3} onClick={onCloseAsideFilters}>
+              Закрыть
+            </Button>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
       <SortMenu />

@@ -1,16 +1,17 @@
 import { FC, useEffect, useState } from "react";
-import { LinkBox, LinkOverlay, Spinner, Table, TableContainer, Tbody, Td, Text, Box, Th, Thead, Tr } from "@chakra-ui/react";
+import { LinkBox, Table, TableContainer, Tbody, Td, Box, Th, Thead, Tr } from "@chakra-ui/react";
 import { IOrder, IOrderList } from "../../consts";
 import ModalOrder from "../modals/modalOrder";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Pagination } from "./pagination";
+import { OrderCard } from "./orderCard";
 
 const OrdersList: FC<IOrderList> = (props) => {
   const propsOrders = props.orders;
 
-  const { isOpenModalOrder, onOpenModalOrder, onCloseModalOrder, isLoaded } = props;
+  const { isOpenModalOrder, onOpenModalOrder, onCloseModalOrder } = props;
   const [modalOrder, setModalOrder] = useState<IOrder>({
     status: "",
     items: [],
@@ -27,15 +28,10 @@ const OrdersList: FC<IOrderList> = (props) => {
   const countPages = Math.ceil(propsOrders.length / sortBy);
   const startSlice = page * sortBy;
   const endSclice = startSlice + sortBy;
-
   const filtredOrders = propsOrders.slice(startSlice, endSclice);
-  const modalOrderHandle = (order: IOrder) => {
-    setModalOrder(order);
-    onOpenModalOrder();
-  };
 
   useEffect(() => {
-    if (isLoaded && filtredOrders.length) {
+    if (filtredOrders.length) {
       filtredOrders.forEach((order: IOrder) => {
         if (orderId === order.userId_dateTime) {
           setModalOrder(order);
@@ -43,7 +39,8 @@ const OrdersList: FC<IOrderList> = (props) => {
         }
       });
     }
-  }, [onOpenModalOrder, orderId, modalOrder, isLoaded, filtredOrders]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderId, modalOrder, filtredOrders]);
   return (
     <Box>
       <LinkBox as="article" mb={30}>
@@ -59,32 +56,14 @@ const OrdersList: FC<IOrderList> = (props) => {
             </Thead>
 
             <Tbody>
-              {isLoaded ? (
-                filtredOrders.length ? (
-                  filtredOrders.map((order: IOrder) => (
-                    <Tr key={order.userId_dateTime} onClick={() => modalOrderHandle(order)}>
-                      <Td>
-                        {" "}
-                        <LinkOverlay as={Link} to={order.userId_dateTime}>
-                          {order.status}
-                        </LinkOverlay>
-                      </Td>
-                      <Td>{new Date(order.dateTime).toDateString()}</Td>
-                      <Td textAlign="center">{order.paymentForm}</Td>
-                      <Td textAlign="center">{order.amount}</Td>
-                    </Tr>
-                  ))
-                ) : (
-                  <Tr>
-                    <Td textAlign="center" colSpan={4}>
-                      Заказы не найдены
-                    </Td>
-                  </Tr>
-                )
+              {filtredOrders.length ? (
+                filtredOrders.map((order: IOrder) => (
+                  <OrderCard key={order.userId_dateTime} order={order} setModalOrder={setModalOrder} onOpenModalOrder={onOpenModalOrder} />
+                ))
               ) : (
                 <Tr>
                   <Td textAlign="center" colSpan={4}>
-                    <Spinner as={Text} thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
+                    Заказы не найдены
                   </Td>
                 </Tr>
               )}

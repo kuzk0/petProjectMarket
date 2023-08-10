@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import {
   Text,
   Card,
@@ -27,8 +27,6 @@ import { PATH } from "../../consts";
 
 import { useNavigate } from "react-router";
 
-import { User, onAuthStateChanged } from "firebase/auth";
-
 import { FaUserLarge } from "react-icons/fa6";
 import { deleteUser } from "../../utils/db";
 
@@ -36,9 +34,8 @@ import { Field, Form, Formik } from "formik";
 import { passwordSchema } from "../../utils/loginSchema";
 
 export const UserAccount: FC = () => {
-  
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState<User>({} as User);
+  const currentUser = auth.currentUser;
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -46,15 +43,8 @@ export const UserAccount: FC = () => {
 
   const toast = useToast();
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user);
-      } else navigate(PATH.MAIN);
-    });
-  }, [navigate]);
-
-  const deleteAccountHandle= (password:string) => {
+  const deleteAccountHandle = ({ password }: { password: string }) => {
+    setIsLoadingButton(true);
     deleteUser(password).then((result) => {
       if (result?.type === "error") {
         toast({
@@ -81,7 +71,7 @@ export const UserAccount: FC = () => {
     <Card>
       <CardHeader>
         <Heading size="md">
-          {currentUser.displayName}
+          {currentUser?.displayName}
           <Tag ml={5} variant="subtle" colorScheme="messenger">
             <TagLeftIcon boxSize="12px" as={FaUserLarge} />
             <TagLabel>Пользователь</TagLabel>
@@ -96,10 +86,7 @@ export const UserAccount: FC = () => {
               password: "",
             }}
             validationSchema={passwordSchema}
-            onSubmit={(values, { resetForm }) => {
-              setIsLoadingButton(true);
-              deleteAccountHandle(values.password);
-            }}
+            onSubmit={deleteAccountHandle}
           >
             {({ errors, touched }) => (
               <Form>
@@ -123,7 +110,7 @@ export const UserAccount: FC = () => {
                   </InputGroup>
                 </FormControl>
                 <Box minH="30px">
-                  <Text color="darkred">{errors.password && touched.password && errors.password} </Text>
+                  <Text color="red.400">{errors.password} </Text>
                 </Box>
               </Form>
             )}

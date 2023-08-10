@@ -5,20 +5,33 @@ import { ICartItemProps } from "../../consts";
 import { useDispatch } from "react-redux";
 import { changeCount, deleteItem } from "../../store/slices/cartSlice";
 
-
-
 export const CartItem: FC<ICartItemProps> = (props) => {
+  const item = props.item;
   const [isLoaded, setIsLoaded] = useState(false);
   const refInput = useRef(null);
 
   const dispatch = useDispatch();
 
-  const item = props.item;
-  const changeCountClick = (changedCountItem: number) => {
-    if (changedCountItem <= 0) dispatch(deleteItem(item.product));
+  const incrementCount = () => {
+    dispatch(changeCount({ product: item.product, count: item.count + 1 }));
+  };
+  const decrementCount = () => {
+    dispatch(changeCount({ product: item.product, count: item.count - 1 }));
+  };
+
+  const changeCountClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const changedCountItem = +event.target.value || 1;
+    if (changedCountItem <= 0) deleteItemHandle();
     else {
       dispatch(changeCount({ product: item.product, count: changedCountItem }));
     }
+  };
+
+  const deleteItemHandle = () => {
+    dispatch(deleteItem(item.product));
+  };
+  const setIsLoadedTrue = () => {
+    setIsLoaded(true);
   };
 
   return (
@@ -36,7 +49,7 @@ export const CartItem: FC<ICartItemProps> = (props) => {
           justifyContent="center"
           borderRadius="lg"
         >
-          <Image src={item.product.image} alt={item.product.title} maxH="100%" m="0 auto" borderRadius="lg" onLoad={() => setIsLoaded(true)} />
+          <Image src={item.product.image} alt={item.product.title} maxH="100%" m="0 auto" borderRadius="lg" onLoad={setIsLoadedTrue} />
         </Skeleton>
       </Box>
       <Stack maxW="80%">
@@ -53,14 +66,14 @@ export const CartItem: FC<ICartItemProps> = (props) => {
         </Text>
 
         <Flex w="100%" justifyContent="space-between" alignItems="center">
-          <Button textColor="blue.300" size="sm" onClick={() => changeCountClick(item.count - 1)}>
+          <Button textColor="blue.300" size="sm" onClick={decrementCount}>
             -
           </Button>
 
           <NumberInput value={item.count} size="sm" defaultValue={1} min={0}>
-            <NumberInputField padding={0} textAlign="center" border={0} ref={refInput} onChange={(e) => changeCountClick(+e.target.value || 1)} />
+            <NumberInputField padding={0} textAlign="center" border={0} ref={refInput} onChange={changeCountClick} />
           </NumberInput>
-          <Button textColor="blue.300" size="sm" onClick={() => changeCountClick(item.count + 1)}>
+          <Button textColor="blue.300" size="sm" onClick={incrementCount}>
             +
           </Button>
         </Flex>
@@ -68,7 +81,7 @@ export const CartItem: FC<ICartItemProps> = (props) => {
           {item.count}x{item.product.price} ₽
         </Text>
       </Flex>
-      <Button textColor="blue.300" pos="absolute" right="110px" top="0px" size="sm" onClick={() => dispatch(deleteItem(item.product))}>
+      <Button textColor="blue.300" pos="absolute" right="110px" top="0px" size="sm" onClick={deleteItemHandle}>
         Удалить
       </Button>
     </Flex>
